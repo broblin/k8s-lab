@@ -5,7 +5,9 @@ metadata:
 spec:
   volumes:
     - name: "kuard-data"
-      emptyDir: {}
+      nfs:
+        server: my.nfs.server.local
+        path: "/exports"
   containers:
     - image: gcr.io/kuar-demo/kuard-amd64:blue
       name: kuard
