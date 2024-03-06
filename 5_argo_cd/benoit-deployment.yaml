@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: door
+    app-of: benoit
+  name: door
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: door
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: door
+        app-of: benoit
+    spec:
+      containers:
+        - image: europe-west1-docker.pkg.dev/k8s-formation/formation-img/unlocker:1.6
+          name: door
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+          envFrom:
+            - configMapRef:
+                name: benoit-cm

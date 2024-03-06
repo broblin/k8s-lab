@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: doorjob
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: curl
+              image: curlimages/curl:8.6.0
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - configMapRef:
+                    name: benoit-cm
+              command:
+                - /bin/sh
+                - -c
+                - curl what-an-url.default:8080 -d "unlocker=$OWNER_NAME"; exit 0;
+          restartPolicy: OnFailure
